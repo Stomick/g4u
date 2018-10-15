@@ -1,0 +1,161 @@
+.modal-form {
+  font-size: 2.4rem;
+  padding: 2.5rem;
+  background-color: $color__white;
+
+  .select-wrapper .caret {
+    fill: $color__primary;
+  }
+
+  .dropdown-content li > span,
+  legend,
+  input:not([type]):focus:not([readonly]) + label,
+  input[type="text"]:not(.browser-default):focus:not([readonly]) + label,
+  input[type="password"]:not(.browser-default):focus:not([readonly]) + label,
+  input[type="email"]:not(.browser-default):focus:not([readonly]) + label,
+  input[type="url"]:not(.browser-default):focus:not([readonly]) + label,
+  input[type="time"]:not(.browser-default):focus:not([readonly]) + label,
+  input[type="date"]:not(.browser-default):focus:not([readonly]) + label,
+  input[type="datetime"]:not(.browser-default):focus:not([readonly]) + label,
+  input[type="datetime-local"]:not(.browser-default):focus:not([readonly])
+    + label,
+  input[type="tel"]:not(.browser-default):focus:not([readonly]) + label,
+  input[type="number"]:not(.browser-default):focus:not([readonly]) + label,
+  input[type="search"]:not(.browser-default):focus:not([readonly]) + label,
+  textarea.materialize-textarea:focus:not([readonly]) + label,
+  .colored {
+    color: $color__primary;
+  }
+
+  .select-wrapper input.select-dropdown:focus,
+  input:not([type]):focus:not([readonly]),
+  input[type="text"]:not(.browser-default):focus:not([readonly]),
+  input[type="password"]:not(.browser-default):focus:not([readonly]),
+  input[type="email"]:not(.browser-default):focus:not([readonly]),
+  input[type="url"]:not(.browser-default):focus:not([readonly]),
+  input[type="time"]:not(.browser-default):focus:not([readonly]),
+  input[type="date"]:not(.browser-default):focus:not([readonly]),
+  input[type="datetime"]:not(.browser-default):focus:not([readonly]),
+  input[type="datetime-local"]:not(.browser-default):focus:not([readonly]),
+  input[type="tel"]:not(.browser-default):focus:not([readonly]),
+  input[type="number"]:not(.browser-default):focus:not([readonly]),
+  input[type="search"]:not(.browser-default):focus:not([readonly]),
+  textarea.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid $color__primary;
+    box-shadow: 0 1px 0 0 $color__primary;
+  }
+
+  [type="checkbox"]:checked + span:not(.lever):before {
+    border-right: 2px solid $color__primary;
+    border-bottom: 2px solid $color__primary;
+  }
+
+  fieldset {
+    border: none;
+    padding: 0;
+
+    legend {
+      margin-bottom: 2rem;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  label,
+  [type="checkbox"] + span:not(.lever) {
+    font-size: 1.6rem;
+  }
+}
+
+.modal {
+  max-height: 80vh;
+  overflow: hidden;
+  background-color: transparent;
+  width: 70%;
+  box-shadow: none;
+
+  @include respond(phone) {
+    width: 100%;
+  }
+
+  &#modal2 {
+    & .modal-content > .row {
+      margin-bottom: 0;
+    }
+  }
+
+  .modal-content {
+    width: 85%;
+    margin: 0 auto;
+    padding: 0;
+    height: auto;
+    max-height: 84vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: transparent;
+
+    .row {
+      margin-bottom: 0;
+    }
+
+    &::-webkit-scrollbar {
+      width: 6px;
+      background-color: $color__primary;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $color__white;
+      border: 1px solid $color__primary;
+    }
+  }
+
+  &__tabs-wrap {
+    .tabs {
+      background-color: transparent;
+    }
+
+    .tabs {
+      border: 1px solid $color__primary;
+
+      a {
+        color: $color__white;
+        font-size: 2.3rem;
+
+        &:hover {
+          color: $color__white;
+          background-color: rgba($color__primary, 0.2);
+        }
+      }
+
+      & a.active {
+        color: $color__white !important;
+        background-color: $color__primary !important;
+      }
+    }
+
+    .indicator {
+      display: none;
+    }
+  }
+
+  &__tabs-wrap,
+  .s12.active {
+    padding: 0 !important;
+  }
+
+  .s12.active {
+    background-color: $color__white;
+  }
+
+  .modal-close {
+    position: absolute;
+    right: 2rem;
+    z-index: 1005;
+
+    @include respond(phone) {
+      display: none;
+    }
+  }
+}

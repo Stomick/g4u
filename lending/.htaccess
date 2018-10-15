@@ -1,0 +1,51 @@
+<ifModule mod_headers.c>
+    Header always set Access-Control-Allow-Origin: "*"
+    Header always set Access-Control-Allow-Methods "POST, GET, PUT, DELETE, OPTIONS"
+    Header always set Access-Control-Allow-Headers "X-Requested-With, content-type, authorization"
+    # Serve gzip compressed CSS files if they exist
+    # and the client accepts gzip.
+    RewriteCond "%{HTTP:Accept-encoding}" "gzip"
+    RewriteCond "%{REQUEST_FILENAME}\.gz" -s
+    RewriteRule "^(.*)\.css" "$1\.css\.gz" [QSA]
+
+    # Serve gzip compressed JS files if they exist
+    # and the client accepts gzip.
+    RewriteCond "%{HTTP:Accept-encoding}" "gzip"
+    RewriteCond "%{REQUEST_FILENAME}\.gz" -s
+    RewriteRule "^(.*)\.js" "$1\.js\.gz" [QSA]
+
+
+    # Serve correct content types, and prevent mod_deflate double gzip.
+    RewriteRule "\.css\.gz$" "-" [T=text/css,E=no-gzip:1]
+    RewriteRule "\.js\.gz$" "-" [T=text/javascript,E=no-gzip:1]
+
+
+    <FilesMatch "(\.js\.gz|\.css\.gz)$">
+      # Serve correct encoding type.
+      Header append Content-Encoding gzip
+
+      # Force proxies to cache gzipped &
+      # non-gzipped css/js files separately.
+      Header append Vary Accept-Encoding
+    </FilesMatch>
+</IfModule>
+
+<FilesMatch ".(flv|gif|jpg|jpeg|png|ico|swf|js|css|pdf|svg|woff)$">
+  Header set Cache-Control "max-age=2592000"
+</FilesMatch>
+
+<FilesMatch ".(pl|php|cgi|spl|scgi|fcgi)$">
+  Header unset Cache-Control
+</FilesMatch>
+
+Options +FollowSymLinks -Indexes
+IndexIgnore */*
+
+<ifModule deflate_module>
+    AddOutputFilterByType DEFLATE text/html text/xml text/css text/plain
+    AddOutputFilterByType DEFLATE image/svg+xml application/xhtml+xml application/xml
+    AddOutputFilterByType DEFLATE application/rdf+xml application/rss+xml application/atom+xml
+    AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript application/json
+    AddOutputFilterByType DEFLATE application/x-font-ttf application/x-font-otf
+    AddOutputFilterByType DEFLATE font/truetype font/opentype
+</ifModule>

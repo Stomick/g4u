@@ -1,0 +1,113 @@
+body {
+  width: 1920px;
+  height: 1080px;
+  margin: 0;
+  padding: 0;
+  background: #330033 url("/img/logo-pink.png") no-repeat;
+  background-position: center;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  height: 25%;
+  padding: 0 8%;
+  padding-top: 5%;
+}
+
+.header .col {
+  width: 20%;
+  align-self: center;
+}
+
+.header .col-big {
+  width: 40%;
+}
+
+.header .col-big span {
+  font-size: 60px;
+  font-weight: bold;
+  color: #fff;
+  -webkit-text-stroke: 3px #339933;
+}
+
+.header .tour,
+.footer .stadium {
+  text-align: center;
+  font-size: 80px;
+  margin: 0;
+  color: #fff;
+  -webkit-text-stroke: 3px #339933;
+}
+
+.header .right {
+  text-align: right;
+}
+
+.main {
+  display: flex;
+  height: 50%;
+}
+
+.main .left {
+  width: 50%;
+  background-image: linear-gradient(90deg, #ede8ed 90%, #c2b3c2 10%);
+  transform: skew(-25deg) translateX(-17%);
+}
+
+.main .right {
+  width: 50%;
+  background-image: linear-gradient(90deg, #c2b3c2 10%, #ede8ed 10%);
+  transform: skew(-25deg) translateX(15%);
+}
+
+.main .left .container {
+  text-align: center;
+  height: 100%;
+  transform: skew(25deg) translate(0, 15%);
+}
+
+.main .right .container {
+  text-align: center;
+  height: 100%;
+  transform: skew(25deg) translate(0, 15%);
+}
+
+.main h2 {
+  font-size: 48px;
+  font-weight: normal;
+}
+
+.main img {
+  width: auto;
+  height: 340px;
+}
+
+.footer {
+  display: flex;
+  height: 25%;
+  padding: 0 8%;
+  padding-bottom: 5%;
+  background-color: #330033;
+}
+.footer .col {
+  display: flex;
+  width: 20%;
+  align-self: flex-end;
+}
+.footer .col img{
+    padding: 0 15px;
+    padding: 0 15px;
+}
+.footer .col-big {
+  width: 40%;
+}

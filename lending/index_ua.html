@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="GWqZe7BrvMjes5X-tvjH54PuPr5Lw1DY_cjxBs_ZRrE"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MyGame4U - Захоплююча гра на найкращих полях вашого міста</title>
+    <meta name="description" content="Футбольний турнір MyGame4U (My Game for You) це безкомпромісна якість гри з кращими гравцями України">
+    <link rel='shortcut icon' type='image/vnd.microsoft.icon' href='/favicon.png'>
+    <link rel='apple-touch-icon' type='image/png' href='/favicon.png'>
+    <link rel='apple-touch-icon' type='image/png' sizes='72x72' href='/favicon.png'>
+    <link rel='apple-touch-icon' type='image/png' sizes='114x114' href='/favicon.png'>
+    <link rel='icon' type='image/png' href='/favicon.ico'>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" href="css/fonts.css">
+</head>
+
+<body>
+<div class="navbar-fixed navigation">
+    <nav class="navigation__nav">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="#header" class="brand-logo">
+                    <img src="/img/logo.svg" alt="">
+                </a>
+                <a data-target="mobile-demo" class="sidenav-trigger">
+                    <i class="material-icons">menu</i>
+                </a>
+                <ul class="right hide-on-med-and-down">
+                    <li>
+                        <a class="navigation__link" href="#header">Головна</a>
+                    </li>
+                    <li>
+                        <a class="navigation__link" href="#tournaments">Про турнір</a>
+                    </li>
+                    <li>
+                        <a class="navigation__link" href="#about">Про MyGame4U</a>
+                    </li>
+                    <li>
+                        <a class="navigation__link modal-trigger" href="#modal1">Вступити до ліги</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<ul class="sidenav" id="mobile-demo">
+    <li>
+        <a class="navigation__link" href="#header">Головна</a>
+    </li>
+    <li>
+        <a class="navigation__link" href="#tournaments">Про турнір</a>
+    </li>
+    <li>
+        <a class="navigation__link" href="#about">Про MyGame4U</a>
+    </li>
+    <li>
+        <a class="navigation__link" href="#modal1">Вступити до ліги</a>
+    </li>
+</ul>
+
+<header class="main-header scrollspy" id="header">
+    <div class="container valign-wrapper main-header__wrap">
+        <div class="row">
+            <div class="col s12 m9">
+                <h1 class="heading-primary">Захоплююча гра на найкращих полях вашого міста</h1>
+                <p>Футбольний турнір MyGame4U (My Game for You) це безкомпромісна якість гри з кращими гравцями України
+                </p>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section class="about scrollspy" id="about">
+        <div class="container">
+            <h2 class="heading-secondary center-align">
+                Що таке MyGame4U?
+            </h2>
+            <div class="row">
+                <div class="col s12 m10 offset-m1 center-align">
+                    <p>MyGame4U - це 2,5 роки досвіду в організації матчів та турнірів. За цей час було враховано і
+                        вирішено величезну
+                        кількість нюансів і помилок. Тепер ми з упевненістю можемо сказати, що робимо максимально круті
+                        турніри в України.</p>
+                </div>
+            </div>
+
+            <div class="about__advantages center-align">
+                <div class="row">
+
+                    <div class="col s12 m4">
+                        <div class="about__advantages-img valign-wrapper">
+                            <img class="responsive-img" src="img/advantage--1.png" alt="">
+                        </div>
+                        <div class="about__advantages-text">
+                            <p>Відсутність інвесторів. Ми вільно можемо робити те, що бажаємо і ніхто нам не диктує
+                                умови. Ми зосереджені
+                                на якості та комфорті гри учасників ліги.</p>
+                        </div>
+                    </div>
+                    <div class="col s12 m4">
+                        <div class="about__advantages-img valign-wrapper">
+                            <img class="responsive-img" src="img/advantage--2.png" alt="">
+                        </div>
+                        <div class="about__advantages-text">
+                            <p>Реалізація ігор на кращих полях і залах країни. Безпека і комфорт - в цих питаннях ми
+                                безкомпромісні,
+                                адже кожен гравець розуміє важливість якісного покриття поля.</p>
+                        </div>
+                    </div>
+                    <div class="col s12 m4">
+                        <div class="about__advantages-img valign-wrapper">
+                            <img class="responsive-img" src="img/advantage--3.png" alt="">
+                        </div>
+                        <div class="about__advantages-text">
+                            <p>Онлайн платформа для перегляду статистики, здійснення трансферів, аналізу гравців та
+                                багато іншого.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="leagues scrollspy" id="tournaments">
+        <div class="leagues__panels">
+            <div class="leagues__panels-wrap">
+                <div class="leagues__panel leagues__panel--1">
+                    <div class="leagues__heading leagues__heading--left">
+                        <h3 class="heading-tertiary">Classic</h3>
+                        <p class="leagues__heading-text">Створи команду і перемагай конкурентів не тільки в бізнесі, а
+                            ще й на полі</p>
+                    </div>
+
+                    <div class="leagues__panel-text">
+                        <p>Ти фанат футболу і хочеш показати хто на полі господар? Або можливо бажаєте заявити всім, що
+                            Ваша компанія
+                            вміє не тільки приносити гроші, але ще й рухатися по турнірній таблиці? Звертайтеся до нас і
+                            ми забезпечимо
+                            комфортні і запеклі протистояння на зеленому полі! </p>
+                        <p>Ще вашому клубу будуть доступні:</p>
+
+                        <div class="leagues__panel-lists">
+                            <ul class="leagues__panel-list">
+                                <li class="leagues__check">Фото та відео зйомка кожної гри</li>
+                                <li class="leagues__check">Професійні коментатори матчу</li>
+                                <li class="leagues__check">Повні матчі і відеоогляд небезпечних моментів</li>
+                                <li class="leagues__check">Прев'ю / рев'ю в текстовому форматі кожної гри</li>
+                                <li class="leagues__check">Медперсонал</li>
+                                <li class="leagues__check">Інтерв'ю після матчів</li>
+                                <li class="leagues__check">Кваліфіковані арбітри</li>
+                            </ul>
+                            <ul class="leagues__panel-list">
+                                <li class="leagues__check">Кращі поля в місті</li>
+                                <li class="leagues__check">Безкоштовна вода</li>
+                                <li class="leagues__check">ТОП5 голів та сейвів після кожного зіграного туру
+                                    чемпіонату
+                                </li>
+                                <li class="leagues__check">Будь-яка статистика гравців і команд</li>
+                                <li class="leagues__check">Ballboy (подають м'ячі)</li>
+                                <li class="leagues__check">Індивідуальний підхід журналістів до кожного гравця</li>
+                                <li class="leagues__check">Зв'язок з організаторами турніру 24/7</li>
+                            </ul>
+                        </div>
+
+                        <h2 class="heading-secondary">Боротьба за призовий фонд 100,000 гривень!</h2>
+                    </div>
+
+
+                </div>
+                <div class="leagues__panel leagues__panel--2">
+                    <div class="leagues__heading leagues__heading--right">
+                        <h3 class="heading-tertiary">Amateur</h3>
+                        <p class="leagues__heading-text">Покращуй показники і стань чемпіоном України в Amateur
+                            league</p>
+                    </div>
+                    <div class="leagues__panel-text">
+                        <p>Amateur - формат аматорського футболу від MyGame4U, призовий фонд якого складає сума з
+                            п'ятьма нулями. Чи
+                            не аргумент? А якщо ми тобі скажемо, що у нас є своя Ліга Чемпіонів і протягом сезону будуть
+                            доступні Ліги
+                            Федерацій? У твоєї команди з'явиться можливість носити назви клубів "Барселона" або
+                            "Манчестер" та багато
+                            інших команд з всесвітньою історією а також поринути в атмосферу великого футбольного
+                            дійства. Звертайся
+                            швидше до нас і ми допоможемо тобі знайти команду або можеш заявити свою!</p>
+                        <p>Також вашому клубу будуть доступні:</p>
+                        <div class="leagues__panel-lists">
+                            <ul class="leagues__panel-list">
+                                <li class="leagues__check leagues__check--green">Фото та відео зйомка кожної гри</li>
+                                <li class="leagues__check leagues__check--green">Професійні коментатори матчу</li>
+                                <li class="leagues__check leagues__check--green">Повні матчі і відеоогляд небезпечних
+                                    моментів
+                                </li>
+                                <li class="leagues__check leagues__check--green">Прев'ю / рев'ю в текстовому форматі
+                                    кожної гри
+                                </li>
+                                <li class="leagues__check leagues__check--green">Медперсонал</li>
+                                <li class="leagues__check leagues__check--green">Інтерв'ю після матчів</li>
+                            </ul>
+                            <ul class="leagues__panel-list">
+                                <li class="leagues__check leagues__check--green">Кваліфіковані арбітри</li>
+                                <li class="leagues__check leagues__check--green">Кращі поля в місті</li>
+                                <li class="leagues__check leagues__check--green">Безкоштовна вода</li>
+                                <li class="leagues__check leagues__check--green">ТОП5 голів та сейвів після кожного
+                                    зіграного туру чемпіонату
+                                </li>
+                                <li class="leagues__check leagues__check--green">Будь-яка статистика гравців і команд
+                                </li>
+                                <li class="leagues__check leagues__check--green">Зв'язок з організаторами турніру 24/7
+                                </li>
+                            </ul>
+                        </div>
+
+                        <h2 class="heading-secondary">Боротьба за призовий фонд 100,000 гривень!</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="forms">
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <p>
+                        Грайте зі своєю командою і знайдіть нових друзів! А може Ви саме той, хто відкриє лігу MyGame4U
+                        у своєму місті? Навіть якщо
+                        у Вас залишилися питання - тисніть на кнопку і з Вами зв'яжуться!
+                    </p>
+                </div>
+
+                <div class="col s12 m4">
+                    <a href="#modal1" class="btn btn__custom waves-effect waves-default  modal-trigger">Знайти
+                        команду</a>
+                </div>
+                <div class="col s12 m4">
+                    <a href="#modal1" class="btn btn__custom waves-effect waves-default  modal-trigger">Заявити
+                        команду</a>
+                </div>
+                <div class="col s12 m4">
+                    <a href="#modal2" class="btn btn__custom waves-effect waves-default  modal-trigger">Відкрити
+                        лігу</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="page-footer main-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 l8 offset-l2 valign-wrapper">
+                <div class="main-footer__contacts">
+                    <div class="row">
+                        <div class="col s12 m6">
+                            <a href="mailto:ua.football@mygame4u.com">ua.football@mygame4u.com</a>
+                        </div>
+                        <div class="col col s12 m6 main-footer__contacts--phone">
+                            <a href="tel:+380660365296">+38 (066) 036 52 96</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 l3 offset-l1">
+                <div class="main-footer__socials">
+                    <!-- <div class="row">
+                      <div class="col s4 center-align">
+                        <a href="//">
+                          <img src="img/instagram-logo.svg" alt="Instagram">
+                        </a>
+                      </div>
+                      <div class="col s4 center-align">
+                        <a href="//">
+                          <img src="img/vk-social-logotype.svg" alt="Vk">
+                        </a>
+                      </div>
+                      <div class="col s4 center-align">
+                        <a href="//">
+                          <img src="img/facebook-logo-button.svg" alt="Facebook">
+                        </a>
+                      </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright main-footer__copyright">
+        <div class="container center-align">
+            Розроблено:
+            <a href="//notyteam.com.ua/">Skvader&NotyTeam</a>
+        </div>
+    </div>
+</footer>
+
+<div id="modal1" class="modal">
+    <a class="modal-close">
+        <img src="img/cross.png">
+    </a>
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12 modal__tabs-wrap">
+                <ul class="tabs">
+                    <li class="tab col s6">
+                        <a class="active" href="#list1">Знайти команду</a>
+                    </li>
+                    <li class="tab col s6">
+                        <a href="#list2">Заявити команду</a>
+                    </li>
+                </ul>
+            </div>
+            <div id="list1" class="col s12">
+                <form class="modal-form" id="f_find_command" action="http://api.mygame4u.com/mail/lending"
+                      method="post">
+                    <div class="input-field col s12">
+                        <input id="city2" required type="text" name="city" class="validate">
+                        <label for="city2">Вашe miсто</label>
+                    </div>
+
+                    <fieldset>
+                        <legend>Звідки дізналися про MyGame4U?</legend>
+                        <p>
+                            <label>
+                                <input type="checkbox" name="how__know" value="vk"/>
+                                <span>Vkontakte</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" name="how__know" value="fb"/>
+                                <span>Facebook</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" name="how__know" value="instagram"/>
+                                <span>Instagram</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" name="how__know" value="friends"/>
+                                <span>Друзі</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" name="how__know" value="other"/>
+                                <span>Інше</span>
+                            </label>
+                        </p>
+                        <!-- <div class="row">
+                          <div class="input-field col s12">
+                            <input id="your__variant" type="text" class="validate">
+                            <label for="your__variant">Ваш варіант</label>
+                          </div>
+                        </div> -->
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Десь грали раніше?</legend>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="experience" required type="text" name="answer" class="validate">
+                                <label for="experience">Ваша відповідь</label>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="name" required name="name" type="text">
+                                <label for="name" class="colored">Ім'я</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <input id="phone" required name="tel" type="tel">
+                                <label for="phone" class="colored">Номер телефону</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <input id="age" required name="age" type="number">
+                                <label for="age" class="colored">Вік</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <input id="position" required type="number" class="validate">
+                                <label for="position" class="colored">Позиція на полі</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <input class="btn btn__custom btn__custom--green" id="find_command" name="find_command"
+                           type="submit" value="Знайти команду">
+                </form>
+            </div>
+            <div id="list2" class="col s12">
+                <form class="modal-form" id="f_claim_team" action="http://api.mygame4u.com/mail/lending" method="post">
+                    <div class="input-field col s12">
+                        <input id="city3" required type="text" name="city" class="validate">
+                        <label for="city3">Вашe miсто</label>
+                    </div>
+
+                    <fieldset>
+                        <legend>Звідки дізналися про MyGame4U?</legend>
+                        <p>
+                            <label>
+                                <input type="checkbox" name="how__know" value="vk"/>
+                                <span>Vkontakte</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" name="how__know" value="fb"/>
+                                <span>Facebook</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" name="how__know" value="inst"/>
+                                <span>Instagram</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" name="how__know" value="friends"/>
+                                <span>Друзі</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" name="how__know" value="other"/>
+                                <span>Інше</span>
+                            </label>
+                        </p>
+                        <!-- <div class="row">
+                          <div class="input-field col s12">
+                            <input id="your__variant2" type="text" class="validate">
+                            <label for="your__variant2">Ваш вариант</label>
+                          </div>
+                        </div> -->
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Десь грали раніше?</legend>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="experience2" required name="answer" type="text" class="validate">
+                                <label for="experience2">Ваша відповідь</label>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="name2" required name="name" type="text">
+                                <label for="name2" class="colored">Ім'я</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <input id="phone2" required name="tel" type="tel">
+                                <label for="phone2" class="colored">Номер телефону</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <input class="btn btn__custom btn__custom--green" name="claim_team" id="claim_team" type="submit"
+                           value="Заявити команду">
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="modal2" class="modal">
+    <a class="modal-close">
+        <img src="img/cross.png">
+    </a>
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12 modal__tabs-wrap">
+                <ul class="tabs">
+                    <li class="tab col s12">
+                        <a class="active" href="#list3">Відкрити лігу</a>
+                    </li>
+                </ul>
+            </div>
+            <div id="list3" class="col s12">
+                <form class="modal-form" id="f_open_league" action="http://api.mygame4u.com/mail/lending" method="post">
+                    <div class="input-field col s12">
+                            <input id="city" required type="text" name="city" class="validate">
+                            <label for="city">Вашe miсто</label>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="name3" required name="name" type="text">
+                            <label for="name3" class="colored">Ім'я</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="phone3" required name="tel" type="tel">
+                            <label for="phone3" class="colored">Номер телефону</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="age3" name="age" required type="number">
+                            <label for="age3" class="colored">Вік</label>
+                        </div>
+                    </div>
+                    <fieldset>
+                        <legend>Наявність організаторського досвіду</legend>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="experience3" name="answer" required type="text" class="validate">
+                                <label for="experience3">Ваша відповідь</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <input class="btn btn__custom btn__custom--green" id="open_league" name="open_league" type="submit"
+                           value="Відкрити лігу">
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="js/materialize.min.js"></script>
+<script src="js/script.js"></script>
+<script src="js/mail.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-123636076-2"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-123636076-2');
+</script>
+<!-- Facebook Pixel Code -->
+<script>
+    !function (f, b, e, v, n, t, s) {
+        if (f.fbq) return;
+        n = f.fbq = function () {
+            n.callMethod ?
+                n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+        };
+        if (!f._fbq) f._fbq = n;
+        n.push = n;
+        n.loaded = !0;
+        n.version = '2.0';
+        n.queue = [];
+        t = b.createElement(e);
+        t.async = !0;
+        t.src = v;
+        s = b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t, s)
+    }(window, document, 'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '319140221965378');
+    fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+               src="https://www.facebook.com/tr?id=319140221965378&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Facebook Pixel Code -->
+</body>
+
+</html>

@@ -1,0 +1,2 @@
+[Sat Jul 28 13:43:58.181225 2018] [core:alert] [pid 14191] [client 178.151.69.155:57375] /var/www/html/www/.htaccess: Invalid command 'Header', perhaps misspelled or defined by a module not included in the server configuration
+[Sat Jul 28 13:45:47.297426 2018] [core:alert] [pid 14275] [client 178.151.69.155:57422] /var/www/html/www/.htaccess: Invalid command 'RewriteCond', perhaps misspelled or defined by a module not included in the server configuration

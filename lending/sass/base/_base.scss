@@ -1,0 +1,12 @@
+html {
+  font-size: 62.5%; //10px
+  background-color: $color__white;
+
+  @include respond(tab-land) {
+    font-size: 43.75%; //8px
+  }
+
+  @include respond(tab-port) {
+    font-size: 50%; //9px
+  }
+}

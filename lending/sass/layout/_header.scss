@@ -1,0 +1,20 @@
+.main-header {
+  height: 100vh;
+  background: {
+    image: url(../img/bg_header.png);
+    size: cover;
+    position: top center;
+  }
+  margin-top: -8rem;
+  padding-top: 8rem;
+  font-size: 2.4rem;
+  color: $color__white;
+
+  @include respond(tab-port) {
+    height: max-content; //9px
+  }
+
+  &__wrap {
+    height: 100%;
+  }
+}

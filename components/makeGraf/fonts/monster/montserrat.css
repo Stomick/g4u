@@ -1,0 +1,30 @@
+@font-face {
+    font-family: 'Montserrat';
+    src: local('Montserrat Hairline'), local('Montserrat-Hairline'), url('monster/montserrathairline.woff2') format('woff2'), url('monster/montserrathairline.woff') format('woff'), url('monster/montserrathairline.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Montserrat';
+    src: local('Montserrat Light'), local('Montserrat-Light'), url('monster/montserratlight.woff2') format('woff2'), url('monster/montserratlight.woff') format('woff'), url('monster/montserratlight.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Montserrat';
+    src: local('Montserrat'), local('Montserrat-Regular'), url('monster/montserrat.woff2') format('woff2'), url('monster/montserrat.woff') format('woff'), url('monster/montserrat.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Montserrat';
+    src: local('Montserrat Bold'), local('Montserrat-Bold'), url('monster/montserratbold.woff2') format('woff2'), url('monster/montserratbold.woff') format('woff'), url('monster/montserratbold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Montserrat';
+    src: local('Montserrat Black'), local('Montserrat-Black'), url('monster/montserratblack.woff2') format('woff2'), url('monster/montserratblack.woff') format('woff'), url('monster/montserratblack.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}

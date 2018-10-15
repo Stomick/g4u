@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: http://ukraine-g4u.com.ua/sitemap.xml
