@@ -16,7 +16,7 @@ use app\models\admin\MergePersonal;
 use app\models\admin\MergePlayers;
 use app\models\admin\Personal;
 use app\models\Leagues;
-use app\models\LikeNews;
+use app\models\LikedNews;
 use app\models\News;
 use app\components\HttpBearerAuthG4U;
 use app\models\SubLeagues;
@@ -117,10 +117,10 @@ class NewsController extends Controller
         } else {
             $ip = $_SERVER['REMOTE_ADDR'];
         }
-        if($like = LikeNews::find()->where(['news_id' => $this->body['id'] , 'user_id' => $this->user->id])->one()){
+        if($like = LikedNews::find()->where(['news_id' => $this->body['id'] , 'user_id' => $this->user->id])->one()){
             return $like->delete() ? $this->answer = false : $this->error = true;
         }else {
-            $like = new LikeNews();
+            $like = new LikedNews();
             $like->ip = $ip;
             $like->news_id = $this->body['id'];
             $like->user_id = $this->user->id;
@@ -167,7 +167,7 @@ class NewsController extends Controller
             ])
                          ->join('left join', 'personals p', 'p.personal_id=maker')
                          ->join('left join', 'user_to_personal utp', 'utp.user_id='.$this->user->id)
-                         ->join('left join','news_like lk', 'lk.user_id=' . $this->user->id .' AND lk.news_id=news.news_id')
+                         ->join('left join','liked_news lk', 'lk.user_id=' . $this->user->id .' AND lk.news_id=news.news_id')
                          ->limit($limit)
                          ->offset($offset)
                          ->where('news.league_id=' . $this->user->league_id . ' OR news.league_id=0')

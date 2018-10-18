@@ -22,7 +22,7 @@ use app\models\admin\PlayersEd;
 use app\models\admin\Seasons;
 use app\models\Commands;
 use app\models\Games;
-use app\models\LikedCommans;
+use app\models\LikeCommans;
 use app\models\statistic\CommandToTourn;
 use app\models\statistic\GameOffer;
 use app\models\statistic\PlayersInCommand;
@@ -119,7 +119,42 @@ class CommandController extends Controller
         return ['answer' => $this->answer, 'error' => $this->error, 'message' => $this->message];
     }
 
-    public function actionIndex()
+    public function  actionLike($id){
+        if(!$like = LikeCommans::find()->where(['command_id' => $id, 'user_id' => $this->user->id ] )->one()){
+            $like = new LikeCommans();
+            $like->command_id = intval($id);
+            $like->user_id = $this->user->id;
+            if($like->save()){
+                $this->answer=true;
+                $this->message = ErrorType::answer_true_add[$this->locale];
+            }
+        }else{
+            $like->delete();
+            $this->answer=true;
+            $this->message = ErrorType::answer_true_delete[$this->locale];
+
+            return;
+        }
+        $this->error = true;
+        $this->message = ErrorType::answer_false_delete[$this->locale];
+    }
+
+
+    private function getCommands($limit, $offset , $name){
+        $where = 1;
+        if($name){
+            $where = 'title LIKE "' . $name . '%"';
+        }
+        return Commands::find()->select(['command_id as cId','CONCAT(title ," (", cit.name, ")") as title', 'logo'])
+            ->join('inner join', 'cities cit', 'cit.id=commands.city_id')
+            ->orderBy('title')
+            ->limit($limit)
+            ->offset($offset)
+            ->where($where)
+            ->asArray()->all();
+    }
+
+    public function actionIndex($limit = 20, $offset = 0 , $name = null)
     {
         $comm = [];
         if ($this->player != null) {
@@ -137,18 +172,24 @@ class CommandController extends Controller
 
         $like = [];
         if ($this->player != null) {
-            $like = LikedCommans::find()->select([
+            $like = LikeCommans::find()->select([
                 'cm.command_id as cId',
                 'CONCAT(title ," (", cit.name, ")") as title',
                 'cm.logo',
             ])
-                ->join('inner join', 'commands cm', 'cm.command_id=command_liked.command_id')
+                ->join('inner join', 'commands cm', 'cm.command_id=liked_command.command_id')
                 ->join('inner join', 'cities cit', 'cit.id=cm.city_id')
-                ->where(['cm.player_id' => $this->player->player_id])->asArray()->all();
+                ->where(['liked_command.user_id' => $this->user->id])->asArray()->all();
         }
         $this->answer['liked'] = $like;
-        $this->answer['all'] = Commands::find()->select(['command_id as cId','CONCAT(title ," (", cit.name, ")") as title', 'logo'])
-            ->join('inner join', 'cities cit', 'cit.id=commands.city_id')->asArray()->all();
+        $com = self::getCommands($limit,$offset * $limit, $name);
+        $this->answer['all'] = $com;
+
+        $this->answer['filters'] = [
+            'prev' => $offset == 0 ? null : $offset - 1,
+            'current' => $offset,
+            'next' => count($com) == $limit ? $offset+1 : null
+        ];
     }
 
     public function actionInfo($id)

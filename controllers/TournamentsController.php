@@ -364,7 +364,7 @@ class TournamentsController extends Controller
 
         $tmpPl = [];
         foreach (Games::find()->where(['sub_tournament_id' => $id])->all() as $s => $game) {
-            foreach (EventsInGame::find()->where(['game_id' => $game->game_id, 'type_event_id' => 1])->andWhere('player_id != 0')->all() as $v => $g) {
+            foreach (EventsInGame::find()->where(['game_id' => $game->game_id, 'type_event_id' => 1])->andWhere('events.player_id != 0')->all() as $v => $g) {
                 if (isset($tmpPl[$g->player_id])) {
                     $tmpPl[$g->player_id] += 1;
                 } else {
@@ -381,10 +381,10 @@ class TournamentsController extends Controller
         };
         foreach ($tmpPl as $k => $goal) {
             $pl = Players::find()
-                ->select(['CONCAT(name, " " , surename) as name', 'photo' ,'ps.type'])
-                ->innerJoin('pl_to_com as plt', 'plt.player_id=' . $k)
-                ->join('inner join' , 'position as ps' , 'players.position_id=plt.position_id')
-                ->where(['player_id' => $k])->asArray()->one();
+                ->select(['CONCAT(name, " " , surename) as name', 'photo' ,'ps.type' , 'players.player_id as plId' , 'plt.position_id'])
+                ->innerJoin('pl_to_com as plt', 'plt.player_id=players.player_id')
+                ->innerJoin( 'position as ps' , 'ps.position_id=plt.position_id')
+                ->where(['players.player_id' => $k])->asArray()->one();
             array_push($playersTOP[$pl['type']], [
                 'player' => $pl,
                 'command' => (Commands::find()->select(['title' , 'plt.number'])

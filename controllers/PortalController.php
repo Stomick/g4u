@@ -196,7 +196,9 @@ class PortalController extends Controller
         $this->answer['international'] = $international;
         $this->answer['arhive'] = $arhive;
     }
-    private function getFormsGame($id,$idCom){
+
+    private function getFormsGame($id, $idCom)
+    {
         $games = [];
         foreach (Games::find()
                      ->select([
@@ -234,20 +236,22 @@ class PortalController extends Controller
         }
         return $games;
     }
-    private function getPlayerByTypeInCommand($idCom){
+
+    private function getPlayerByTypeInCommand($idCom)
+    {
         $ret = [];
-        foreach (PositionInField::find()->andWhere('`desc` is not NULL')->orderBy('`desc`')->all() as $k=> $pos){
-            if($play = PlayersInCommand::find()->from('pl_to_com plc')
+        foreach (PositionInField::find()->andWhere('`desc` is not NULL')->orderBy('`desc`')->all() as $k => $pos) {
+            if ($play = PlayersInCommand::find()->from('pl_to_com plc')
                 ->select([
                     'pl.name',
                     'pl.surename',
                     'plc.number',
                 ])
-                ->join('inner join' , 'players pl' , 'pl.player_id=plc.player_id')
-                ->where(['plc.command_id' => $idCom , 'plc.position_id' => $pos->position_id])
+                ->join('inner join', 'players pl', 'pl.player_id=plc.player_id')
+                ->where(['plc.command_id' => $idCom, 'plc.position_id' => $pos->position_id])
                 ->orderBy('plc.number')
                 ->asArray()
-                ->all()){
+                ->all()) {
                 $ret[$pos->desc] = $play;
             }
         }
@@ -311,15 +315,15 @@ class PortalController extends Controller
         return $ret;
     }
 
-    private function getLastGame($id , $comId= null)
+    private function getLastGame($id, $comId = null)
     {
         $lastGame = [];
         $where = [];
         $where['sub_tournament_id'] = $id;
         $where['the_end'] = 1;
         $andWhere = 1;
-        if($comId){
-            $andWhere = 'cm_in.command_id=' .$comId .' or cm_out.command_id='. $comId;
+        if ($comId) {
+            $andWhere = 'cm_in.command_id=' . $comId . ' or cm_out.command_id=' . $comId;
         }
         foreach (Games::find()
                      ->select([
@@ -370,14 +374,14 @@ class PortalController extends Controller
         return $lastGame;
     }
 
-    private function getFutureGames($id , $comId=null)
+    private function getFutureGames($id, $comId = null)
     {
         $beGame = [];
         $where['sub_tournament_id'] = $id;
         $where['the_end'] = 0;
         $andWhere = 1;
-        if($comId){
-            $andWhere = 'cm_in.command_id=' .$comId .' or cm_out.command_id='. $comId;
+        if ($comId) {
+            $andWhere = 'cm_in.command_id=' . $comId . ' or cm_out.command_id=' . $comId;
         }
         foreach (Games::find()
                      ->select([
@@ -454,21 +458,24 @@ class PortalController extends Controller
         }
         return $com;
     }
-    private function getPlayerFromCommand($id){
+
+    private function getPlayerFromCommand($id)
+    {
         $ret = [];
 
         foreach (Players::find()
-            ->select([
-                'players.player_id as plId',
-                'name',
-                'birthday',
-                'surename',
-                'photo',
-                'pos.type'
-            ])
-            ->innerJoin('pl_to_com ptc', 'ptc.player_id=players.player_id')
-            ->innerJoin('position pos' , 'pos.position_id=ptc.position_id' )
-            ->where(['ptc.command_id' => $id])->asArray()->all() as $k => $pl){
+                     ->select([
+                         'players.player_id as plId',
+                         'name',
+                         'birthday',
+                         'surename',
+                         'photo',
+                         'pos.type',
+                         'ptc.number'
+                     ])
+                     ->innerJoin('pl_to_com ptc', 'ptc.player_id=players.player_id')
+                     ->innerJoin('position pos', 'pos.position_id=ptc.position_id')
+                     ->where(['ptc.command_id' => $id])->asArray()->all() as $k => $pl) {
             $ret[$k] = $pl;
             $ret[$k]['age'] = HelpFunction::getDuration($pl['birthday'], date("Y-m-d"));
 
@@ -476,21 +483,21 @@ class PortalController extends Controller
         return $ret;
     }
 
-    private function getTopPlayers($id ,$comId=null, $type = 'goal' , $limit = 5)
+    private function getTopPlayers($id, $comId = null, $type = 'goal', $limit = 5)
     {
         $players = [];
         $tmpPl = [];
         $andWhere = 1;
         if ($comId) {
-                $andWhere = 'command_id_in=' . $comId . ' or command_id_out=' . $comId;
+            $andWhere = 'command_id_in=' . $comId . ' or command_id_out=' . $comId;
         }
 
         foreach (Games::find()->where(['sub_tournament_id' => $id])->andWhere($andWhere)->all() as $s => $game) {
             $where['game_id'] = $game->game_id;
-            if($comId){
+            if ($comId) {
                 $where['command_id'] = $comId;
             }
-            switch ($type){
+            switch ($type) {
                 case 'goal':
                     $where['type_event_id'] = 1;
                     break;
@@ -507,7 +514,7 @@ class PortalController extends Controller
                     $where['type_event_id'] = 1;
                     break;
             }
-            if($type == 'game') {
+            if ($type == 'game') {
                 foreach (PlayersToGame::find()->where($where)->andWhere('player_id != 0')->all() as $v => $g) {
                     if (isset($tmpPl[$g->player_id])) {
                         $tmpPl[$g->player_id] += 1;
@@ -515,7 +522,7 @@ class PortalController extends Controller
                         $tmpPl[$g->player_id] = 1;
                     }
                 }
-            }else{
+            } else {
                 foreach (EventsInGame::find()->where($where)->andWhere('player_id != 0')->all() as $v => $g) {
                     if (isset($tmpPl[$g->player_id])) {
                         $tmpPl[$g->player_id] += 1;
@@ -530,8 +537,8 @@ class PortalController extends Controller
         foreach ($tmpPl as $k => $goal) {
             $players[$index++] = [
                 'player' => Players::find()
-                    ->select(['CONCAT(name, " " , surename) as name', 'photo','ptc.number'])
-                    ->join('inner join' , 'pl_to_com ptc', 'ptc.player_id=players.player_id' )
+                    ->select(['CONCAT(name, " " , surename) as name', 'photo', 'ptc.number'])
+                    ->join('inner join', 'pl_to_com ptc', 'ptc.player_id=players.player_id')
                     ->where(['players.player_id' => $k])->asArray()->one(),
                 'command' => (Commands::find()->select(['title'])
                     ->innerJoin('pl_to_com as plt', 'plt.player_id=' . $k)
@@ -539,7 +546,7 @@ class PortalController extends Controller
                 ,
                 'points' => $goal];
         }
-        if($index > 0 ) {
+        if ($index > 0) {
             for ($i = 0; $i < $index; $i++) {
                 for ($j = 0; $j <= $i; $j++) {
                     if ($players[$j]['points'] < $players[$i]['points']) {
@@ -582,6 +589,7 @@ class PortalController extends Controller
                 ,
                 'points' => $goal];
         }
+
         for ($i = 0; $i < $index; $i++) {
             for ($j = 0; $j <= $i; $j++) {
                 if ($players[$j]['points'] < $players[$i]['points']) {
@@ -640,7 +648,7 @@ class PortalController extends Controller
 
     }
 
-    private function getListgames($id, $comId = null, $tour = null, $stadId = null, $type = null , $filters = true)
+    private function getListgames($id, $comId = null, $tour = null, $stadId = null, $type = null, $filters = true)
     {
         $tours = [];
         $stadiums = [];
@@ -739,7 +747,7 @@ class PortalController extends Controller
         }
 
         $returns['gamelist'] = $ret;
-        if($filters){
+        if ($filters) {
             $returns['filter'] = [
                 'tour' => $toursFilter,
                 'commands' => CommandToTourn::find()
@@ -790,7 +798,7 @@ class PortalController extends Controller
                          'com_pos_in_tour.status',
                          'cmd.command_id as comId'
                      ])
-                     ->join(    'inner join', 'commands as cmd', 'cmd.command_id=com_pos_in_tour.command_id')
+                     ->join('inner join', 'commands as cmd', 'cmd.command_id=com_pos_in_tour.command_id')
                      ->where(['sub_tournament_id' => $id])->asArray()->orderBy('position')->all() as $k => $table) {
             $table['cGame'] = Games::find()->where(['the_end' => 1, 'sub_tournament_id' => $id])->andWhere('command_id_in=' . $table['comId'] . ' or command_id_out=' . $table['comId'])
                 ->asArray()->count();
@@ -1092,8 +1100,8 @@ class PortalController extends Controller
             ])
             ->join('inner join', 'commands as cm_in', 'cm_in.command_id=command_id_in')
             ->join('inner join', 'commands as cm_out', 'cm_out.command_id=command_id_out')
-            ->join('left join' , 'game_statistic gstatIn' , 'games.game_id=gstatIn.game_id and cm_in.command_id=gstatIn.command_id')
-            ->join('left join' , 'game_statistic gstatOut' , 'games.game_id=gstatOut.game_id and cm_out.command_id=gstatOut.command_id')
+            ->join('left join', 'game_statistic gstatIn', 'games.game_id=gstatIn.game_id and cm_in.command_id=gstatIn.command_id')
+            ->join('left join', 'game_statistic gstatOut', 'games.game_id=gstatOut.game_id and cm_out.command_id=gstatOut.command_id')
             ->join('left join', 'tournaments_sub lgb', 'lgb.sub_tournament_id=games.sub_tournament_id')
             ->join('left join', 'stadiums stb', 'stb.stadiums_id=games.stadiums_id')
             ->where(['games.game_id' => $id])
@@ -1101,16 +1109,15 @@ class PortalController extends Controller
             //->andWhere('date/1000 BETWEEN ' . strtotime('-10 day') . ' AND '.strtotime('now') )
             ->asArray()
             ->one()) {
-            $game[
-                'assist'] = Asgmt::find()->from('assignments asm')
-                    ->select([
-                        'CONCAT(ps.name , " " , ps.surename) as name',
-                        'pt.type_ru'
-                    ])
-                    ->join('inner join', 'personals as ps', 'ps.personal_id=asm.personal_id')
-                    ->join('inner join', 'personal_type pt', 'ps.type_id=pt.id')
-                    ->where(['game_id' => $game['id']])
-                    ->asArray()->all();
+            $game['assist'] = Asgmt::find()->from('assignments asm')
+                ->select([
+                    'CONCAT(ps.name , " " , ps.surename) as name',
+                    'pt.type_ru'
+                ])
+                ->join('inner join', 'personals as ps', 'ps.personal_id=asm.personal_id')
+                ->join('inner join', 'personal_type pt', 'ps.type_id=pt.id')
+                ->where(['game_id' => $game['id']])
+                ->asArray()->all();
         }
         $this->answer = $game;
     }
@@ -1131,7 +1138,7 @@ class PortalController extends Controller
                          ->join('inner join', 'pl_to_com plc', 'plc.player_id=plg.player_id')
                          ->join('inner join', 'players as pl', 'pl.player_id=plc.player_id')
                          ->join('inner join', 'position as ps', 'ps.position_id=plc.position_id')
-                         ->where(['plc.command_id' => $game->command_id_in])->orderBy('name')->asArray()->all() as $p => $pl) {
+                         ->where(['plc.command_id' => $game->command_id_in])->distinct()->orderBy('name')->asArray()->all() as $p => $pl) {
                 $pl['comm'] = 'in';
                 $playerIn[$p] = $pl;
 
@@ -1147,7 +1154,7 @@ class PortalController extends Controller
                          ->join('inner join', 'pl_to_com plc', 'plc.player_id=plg.player_id')
                          ->join('inner join', 'players as pl', 'pl.player_id=plc.player_id')
                          ->join('inner join', 'position as ps', 'ps.position_id=plc.position_id')
-                         ->where(['plc.command_id' => $game->command_id_out])->orderBy('name')->asArray()->all() as $p => $pl) {
+                         ->where(['plc.command_id' => $game->command_id_out])->distinct()->orderBy('name')->asArray()->all() as $p => $pl) {
                 $pl['comm'] = 'out';
                 $playerOut[$p] = $pl;
 
@@ -1158,27 +1165,27 @@ class PortalController extends Controller
                 'out' => $playerOut,
                 'field' => 'http://api.mygame4u.com/img/field.png',
                 'events' => EventsInGame::find()
-                        ->select([
-                            'event_id as evId',
-                            'et.title',
-                            'minute',
-                            'et.icon',
-                            'IF(events.command_id=' . $game->command_id_in . ', "up" , "down") as evType',
-                        ])
-                        ->join('inner join', 'events_type et', 'et.type_event_id=events.type_event_id')
-                        ->where(['game_id' => $id])
-                        ->orderBy('minute')
-                        //->limit(10)
-                        ->asArray()->all(),
+                    ->select([
+                        'event_id as evId',
+                        'et.title',
+                        'minute',
+                        'et.icon',
+                        'IF(events.command_id=' . $game->command_id_in . ', "up" , "down") as evType',
+                    ])
+                    ->join('inner join', 'events_type et', 'et.type_event_id=events.type_event_id')
+                    ->where(['game_id' => $id])
+                    ->orderBy('minute')
+                    //->limit(10)
+                    ->asArray()->all(),
                 'maxmin' => (EventsInGame::find()
-                        ->select([
-                            'MAX(minute) as min',
+                    ->select([
+                        'MAX(minute) as min',
 
-                        ])
-                        ->where(['game_id' => $id])
-                        ->orderBy('minute')
-                        //->limit(10)
-                        ->asArray()->one())['min']
+                    ])
+                    ->where(['game_id' => $id])
+                    ->orderBy('minute')
+                    //->limit(10)
+                    ->asArray()->one())['min']
             ];
         } else {
             $this->error = true;
@@ -1232,16 +1239,21 @@ class PortalController extends Controller
                     'comment',
                     'et.icon',
                     'IF(et.type_event_id not in (5,6,14), cm.logo , null) as logo',
-                    'IF(cm.command_id='.$game['inId'].', "up" , "down") as evType',
+                    'IF(cm.command_id=' . $game['inId'] . ', "up" , "down") as evType',
                     'ps.player_id as psId',
                     'IF(et.type_event_id not in (5,6,14), ps.name , null) as psName',
                     'pl.player_id as plId',
-                    'IF(et.type_event_id not in (5,6,14),CONCAT(et.title , " - ", pl.name , " " , pl.surename) , et.title) as title',
+                    'ps.player_id as asId',
+                    'IF(et.type_event_id not in (5,6,14),CONCAT(et.title , " - ", IF(pstc.number is not NULL, CONCAT("#" ,pstc.number , " ") , "" ) , pl.name, " " , pl.surename) , et.title) as title',
+                    'IF(at.type_event_id is not null and at.type_event_id != 0  ,CONCAT(at.title , " - ", IF(astc.number is not NULL, CONCAT("#" ,astc.number , " ") , "" ) , ps.name, " " , ps.surename) , at.title) as astitle',
                 ])
                 ->join('inner join', 'commands cm', 'cm.command_id=events.command_id')
+                ->join('left join', 'pl_to_com pstc', 'pstc.player_id=events.player_id')
+                ->join('left join', 'pl_to_com astc', 'astc.player_id=events.assist_id')
                 ->join('inner join', 'players ps', 'ps.player_id=events.assist_id')
                 ->join('inner join', 'players pl', 'pl.player_id=events.player_id')
                 ->join('left join', 'events_type et', 'et.type_event_id=events.type_event_id')
+                ->join('left join', 'events_assist_type at', 'at.type_event_id=events.assist_type_id')
                 ->where(['game_id' => $id])
                 ->orderBy('minute')
                 //->limit(10)
@@ -1253,7 +1265,7 @@ class PortalController extends Controller
     public function actionGamemedia($id, $type = 'all')
     {
         $ret = [];
-        if($game = Games::find()
+        if ($game = Games::find()
             ->select([
                 'game_id',
                 'tour',
@@ -1270,27 +1282,27 @@ class PortalController extends Controller
 
             $ret = [
                 'events' => EventsInGame::find()
-                ->select([
-                    'event_id as evId',
-                    'et.title',
-                    'minute',
-                    'et.icon',
-                    'IF(events.command_id=' . $game['inId'] . ', "up" , "down") as evType',
-                ])
-                ->join('inner join', 'events_type et', 'et.type_event_id=events.type_event_id')
-                ->where(['game_id' => $id])
-                ->orderBy('minute')
-                //->limit(10)
-                ->asArray()->all(),'maxmin' => (EventsInGame::find()
-                ->select([
-                    'MAX(minute) as min',
+                    ->select([
+                        'event_id as evId',
+                        'et.title',
+                        'minute',
+                        'et.icon',
+                        'IF(events.command_id=' . $game['inId'] . ', "up" , "down") as evType',
+                    ])
+                    ->join('inner join', 'events_type et', 'et.type_event_id=events.type_event_id')
+                    ->where(['game_id' => $id])
+                    ->orderBy('minute')
+                    //->limit(10)
+                    ->asArray()->all(), 'maxmin' => (EventsInGame::find()
+                    ->select([
+                        'MAX(minute) as min',
 
-                ])
-                ->where(['game_id' => $id])
-                ->orderBy('minute')
-                //->limit(10)
-                ->asArray()->one())['min']];
-    }
+                    ])
+                    ->where(['game_id' => $id])
+                    ->orderBy('minute')
+                    //->limit(10)
+                    ->asArray()->one())['min']];
+        }
         switch ($type) {
             case 'photo':
                 $ret[$type] = GamesPhotos::find()->select(['src', 'photo_id as pId'])->where(['game_id' => $id])->asArray()->all();
@@ -1306,10 +1318,11 @@ class PortalController extends Controller
         return $this->answer = $ret;
     }
 
-    public function actionPlayer($id){
+    public function actionPlayer($id)
+    {
 
-        $ret = ['header'=> Players::find()->select(['photo','name' , 'surename' , 'patronymic'])->where(['player_id' => $id])->asArray()->one(),'info' => [],'games'=>[]];
-        if($ret['info'] = Players::find()->from('players pl')
+        $ret = ['header' => Players::find()->select(['photo', 'name', 'surename', 'patronymic'])->where(['player_id' => $id])->asArray()->one(), 'info' => [], 'games' => []];
+        if ($ret['info'] = Players::find()->from('players pl')
             ->select([
                 'cm.title',
                 'ptc.number',
@@ -1322,14 +1335,14 @@ class PortalController extends Controller
                 'pl.leg'
 
             ])
-            ->join('left join' , 'pl_to_com ptc' , 'ptc.player_id=pl.player_id')
-            ->join('left join' , 'commands cm' , 'cm.command_id=ptc.command_id')
-            ->join('inner join' , 'position ps' , 'ps.position_id=ptc.position_id')
+            ->join('left join', 'pl_to_com ptc', 'ptc.player_id=pl.player_id')
+            ->join('left join', 'commands cm', 'cm.command_id=ptc.command_id')
+            ->join('inner join', 'position ps', 'ps.position_id=ptc.position_id')
             ->where(['pl.player_id' => $id])->asArray()->one()) {
             $ret['info']['age'] = HelpFunction::getDuration($ret['info']['birthday'], date("Y-m-d"));
         }
 
-        if($games = PlayersToGame::find()->from('pl_to_game plg')
+        if ($games = PlayersToGame::find()->from('pl_to_game plg')
             ->select([
                 'sea.title as seaTitle',
                 'sub.title as tourTitle',
@@ -1344,17 +1357,17 @@ class PortalController extends Controller
                 '(SELECT COUNT(*) FROM `events` as ev WHERE ev.assist_id=' . $id . ' AND command_id=cm.command_id AND `assist_type_id`= 1) as assist',
                 '(SELECT COUNT(*) FROM `events` as ev WHERE ev.assist_id=' . $id . ' AND command_id=cm.command_id AND `type_event_id`= 1) as score',
             ])
-            ->join('inner join','games gm' , 'gm.game_id=plg.game_id')
-            ->join('inner join','players pl' , 'pl.player_id=plg.player_id')
-            ->join('left join' , 'pl_to_com plc' , 'plc.player_id=plg.player_id')
-            ->join('left join' , 'commands cm' , 'cm.command_id=plc.command_id')
-            ->join('left join' , 'position pos' , 'pos.position_id=plc.position_id')
-            ->join('inner join' , 'tournaments_sub sub', 'sub.sub_tournament_id=gm.sub_tournament_id')
-            ->join('inner join' , 'seasons sea', 'sea.season_id=sub.season_id')
+            ->join('inner join', 'games gm', 'gm.game_id=plg.game_id')
+            ->join('inner join', 'players pl', 'pl.player_id=plg.player_id')
+            ->join('left join', 'pl_to_com plc', 'plc.player_id=plg.player_id')
+            ->join('left join', 'commands cm', 'cm.command_id=plc.command_id')
+            ->join('left join', 'position pos', 'pos.position_id=plc.position_id')
+            ->join('inner join', 'tournaments_sub sub', 'sub.sub_tournament_id=gm.sub_tournament_id')
+            ->join('inner join', 'seasons sea', 'sea.season_id=sub.season_id')
             ->where(['plg.player_id' => $id])
             ->distinct()
             ->asArray()
-            ->all()){
+            ->all()) {
 
             foreach ($games as $k => $game) {
                 $ret['games'][$k] = $game;
@@ -1366,25 +1379,25 @@ class PortalController extends Controller
 
     public function actionCommand($id)
     {
-        $idTour = explode(':' , $id)[0];
-        $idCom = explode(':' , $id)[1];
+        $idTour = explode(':', $id)[0];
+        $idCom = explode(':', $id)[1];
         $ret = [];
-        if($comm = Commands::find()
+        if ($comm = Commands::find()
             ->select([
                 'title',
                 'logo'
             ])
-            ->where(['command_id' => $idCom])->asArray()->one()){
+            ->where(['command_id' => $idCom])->asArray()->one()) {
             $ret['header'] = $comm;
         }
         $tournirs = SubTournaments::find()->select(['sub_tournament_id as subId', 'title'])->where(['season_id' => (SubTournaments::findOne($idTour))->season_id])->asArray()->all();
         $ret['season'] = Seasons::find()->select(['title'])->where(['season_id' => (SubTournaments::findOne($idTour))->season_id])->asArray()->one();
         $ret['tournirs'] = $tournirs;
-        $ret['lastgames'] = self::getLastGame($idTour,$idCom);
-        $ret['begingames'] = self::getFutureGames($idTour,$idCom);
+        $ret['lastgames'] = self::getLastGame($idTour, $idCom);
+        $ret['begingames'] = self::getFutureGames($idTour, $idCom);
         $ret['commands'] = self::getCommands($idTour);
         $date = 0;
-        $countPl=0;
+        $countPl = 0;
         foreach (PlayersInCommand::find()->select(['pl.birthday', 'pl.player_id', 'photo', "CONCAT (pl.name, ' ' , pl.surename ) as name , pl.status"])
                      ->join('inner join', 'players pl', 'pl.player_id=pl_to_com.player_id')
                      ->where(['command_id' => $idCom])->asArray()->all() as $k => $pl) {
@@ -1397,69 +1410,69 @@ class PortalController extends Controller
             'average' => $countPl != 0 ? intval($date / $countPl) : 0];
         $ret['consist'] = self::getPlayerByTypeInCommand($idCom);
         $ret['top'] = [
-            'goal' => self::getTopPlayers($idTour ,$idCom,'goal'),
-            'cart' => self::getTopPlayers($idTour ,$idCom,'cart'),
-            'assist' => self::getTopPlayers($idTour ,$idCom,'assist'),
-            'game' => self::getTopPlayers($idTour ,$idCom,'game')
+            'goal' => self::getTopPlayers($idTour, $idCom, 'goal'),
+            'cart' => self::getTopPlayers($idTour, $idCom, 'cart'),
+            'assist' => self::getTopPlayers($idTour, $idCom, 'assist'),
+            'game' => self::getTopPlayers($idTour, $idCom, 'game')
         ];
-        $ret['forms'] = self::getFormsGame($idTour,$idCom);
+        $ret['forms'] = self::getFormsGame($idTour, $idCom);
         $this->answer = $ret;
     }
 
     public function actionCommandconsist($id)
     {
-        $idTour = explode(':' , $id)[0];
-        $idCom = explode(':' , $id)[1];
+        $idTour = explode(':', $id)[0];
+        $idCom = explode(':', $id)[1];
         $ret = [];
-        if($comm = Commands::find()
+        if ($comm = Commands::find()
             ->select([
                 'title',
                 'logo'
             ])
-            ->where(['command_id' => $idCom])->asArray()->one()){
+            ->where(['command_id' => $idCom])->asArray()->one()) {
             $ret['header'] = $comm;
         }
         $ret['consist'] = self::getPlayerFromCommand($idCom);
-        $ret['lastgames'] = self::getLastGame($idTour,$idCom);
-        $ret['begingames'] = self::getFutureGames($idTour,$idCom);
+        $ret['lastgames'] = self::getLastGame($idTour, $idCom);
+        $ret['begingames'] = self::getFutureGames($idTour, $idCom);
         $ret['commands'] = self::getCommands($idTour);
         $this->answer = $ret;
     }
 
     public function actionCommandcalendar($id)
     {
-        $idTour = explode(':' , $id)[0];
-        $idCom = explode(':' , $id)[1];
+        $idTour = explode(':', $id)[0];
+        $idCom = explode(':', $id)[1];
         $ret = [];
-        if($comm = Commands::find()
+        if ($comm = Commands::find()
             ->select([
                 'title',
                 'logo'
             ])
-            ->where(['command_id' => $idCom])->asArray()->one()){
+            ->where(['command_id' => $idCom])->asArray()->one()) {
             $ret['header'] = $comm;
         }
         $ret['commands'] = self::getCommands($idTour);
-        $ret['calendar'] = self::getListgames($idTour, $idCom, null,null,null,false);
+        $ret['calendar'] = self::getListgames($idTour, $idCom, null, null, null, false);
 
         $this->answer = $ret;
     }
 
     public function actionCommandresult($id)
     {
-        $idTour = explode(':' , $id)[0];
-        $idCom = explode(':' , $id)[1];
+        $idTour = explode(':', $id)[0];
+        $idCom = explode(':', $id)[1];
         $ret = [];
-        if($comm = Commands::find()
+        if ($comm = Commands::find()
             ->select([
                 'title',
                 'logo'
             ])
-            ->where(['command_id' => $idCom])->asArray()->one()){
+            ->where(['command_id' => $idCom])->asArray()->one()) {
             $ret['header'] = $comm;
         }
         $ret['commands'] = self::getCommands($idTour);
-        $ret['calendar'] = self::getListgames($idTour, $idCom, null,null,'result',false);
+        $ret['calendar'] = self::getListgames($idTour, $idCom, null, null, 'result', false);
 
         $this->answer = $ret;
     }

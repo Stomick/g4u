@@ -10,11 +10,11 @@ namespace app\models;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
-class LikedCommans extends ActiveRecord
+class LikeCommans extends ActiveRecord
 {
     public static function tableName()
     {
-        return '{{%command_liked}}';
+        return '{{%liked_command}}';
     }
     /**
      * @inheritdoc

@@ -21,7 +21,7 @@ use app\models\admin\Players;
 use app\models\Commands;
 use app\models\Games;
 use app\models\Leagues;
-use app\models\LikeNews;
+use app\models\LikedNews;
 use app\models\News;
 use app\components\HttpBearerAuthG4U;
 use app\models\statistic\EventsInGame;

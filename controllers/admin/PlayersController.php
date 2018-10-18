@@ -104,24 +104,22 @@ class PlayersController extends Controller
         $this->answer = PositionInField::find()->asArray()->all();
     }
 
-    public function actionIndex($limit = 50, $offset = 1, $comId = null, $name = null, $tied = null)
+    public function actionIndex($limit = 50, $offset = 0, $comId = null, $name = null, $tied = null)
     {
 
         $where = 'pl.player_id != 0';
-
-
-
         $andwhere = 'pl.player_id != 0';
 
-        if($name != null){
+        if($name){
             $n = $name;
             $where = 'CONCAT (LCASE(name) ,\' \',LCASE(surename) , \' \' , (patronymic)  ) like "%' . strtolower(iconv(mb_detect_encoding($n),"UTF-8//IGNORE",$n)) .'%"';
             $where .= 'or email like "%' . $n .'%"';
             //$where .= 'or pl.patronymic like "%' . $n .'%"';
         }
-        if($tied != null){
+        if($tied){
             $where .= ' AND pl.tied='.$tied;
         }
+
         if($comId == 0 && $comId != null){
             $where .= ' AND cm.command_id is null';
         }
@@ -131,31 +129,22 @@ class PlayersController extends Controller
         }
 
         $maxPl = count(Players::find()->from(['players as pl'])
-            ->where($where)
             ->join('left join' , 'pl_to_com ptc', 'ptc.player_id = pl.player_id' )
             ->join('left join', 'commands cm', 'cm.command_id=ptc.command_id')
             ->join('left join' , 'user_to_players utp' , 'utp.player_id=pl.player_id')
             ->join('left join' , 'user usr' , 'usr.id=utp.user_id')
+            ->where($where)
             ->asArray()
             ->all());
 
-        if($name != null){
-            $limit = $maxPl;
-            $offset = 0;
-        }
-        $lims = $limit;
-        if($limit > $maxPl){
-            $limit = $maxPl - $limit;
-        }
-        if(($limit * $offset) >= $maxPl){
-            $limit = $maxPl - ($limit * ($offset - 1));
-
-        }
 
         $players =  Players::find()->from(['players as pl'])
             ->select([
                 "pl.player_id as plId",
-                "CONCAT (name ,' ',surename , ' ' , patronymic , ' | ', position.type ) as name ",
+                "position.type as pos",
+                "name" ,
+                "surename" ,
+                "patronymic",
                 "photo",
                 "birthday",
                 "stature",
@@ -164,27 +153,26 @@ class PlayersController extends Controller
                 "usr.email",
                 "FB",
                 "VK",
-                "phone",
                 'cm.title as cmTitle',
                 'cm.logo as cmLogo',
             ])
             ->join('left join' , 'pl_to_com ptc', 'ptc.player_id = pl.player_id' )
             ->join('left join', 'commands cm', 'cm.command_id=ptc.command_id')
-            ->join('inner join' , 'position' , 'position.position_id=ptc.position_id')
+            ->join('left join' , 'position' , 'position.position_id=ptc.position_id')
             ->join('left join' , 'user_to_players utp' , 'utp.player_id=pl.player_id')
             ->join('left join' , 'user usr' , 'usr.id=utp.user_id')
-            ->distinct('plId')
-            ->andWhere($andwhere)
+            ->distinct(true)
             ->where($where)
-            ->limit($lims)
-            ->offset($offset)
+            ->andWhere($andwhere)
+            ->limit($limit)
+            ->offset($offset*$limit)
             ->orderBy('name')
             ->asArray()
             ->all();
 
         $ps = [];
         $is = 0;
-
+/*
         for($p=0;$p < $maxPl; $p++){
             if(isset($players[$p])) {
                 if (array_search($players[$p]['plId'], $ps)) {
@@ -195,8 +183,8 @@ class PlayersController extends Controller
                 }
             }
         }
-
-        $ret['t'] = $ps;
+*/
+        //$ret['t'] = $ps;
 
         $ret['players'] = $players;
 
@@ -205,34 +193,13 @@ class PlayersController extends Controller
             $limits[$lim++] = $i;
         }
         $limits[$lim] = $maxPl;
-        if(count($ret['players']) == $limit && $offset > 1) {
+
             $offsets = [
-                'prev' => $offset - 1,
-                'curr' => $lims * $offset >= $maxPl ? 1 : $offset,
-                'next'=> $lims * $offset >= $maxPl ? null : $offset + 1
+                'prev' => $offset ==0 ? null: $offset - 1,
+                'curr' => $limit == $maxPl ?  1 : intval($offset) ,
+                'next'=>  $limit > count($players) ? null : $offset + 1
             ];
 
-        }elseif($lims == $maxPl){
-            $offsets = [
-                'prev' => null,
-                'curr' => 1,
-                'next' => null,
-            ];
-
-        }elseif(count($ret['players']) < $lims){
-            $offsets = [
-                'prev' => $offset == 1 ? null : $offset - 1,
-                'curr' => $lims * $offset >= $maxPl ? 1 : $offset,
-                'next' => null
-            ];
-
-        }else {
-            $offsets = [
-                'prev' => null,
-                'curr' => $lims * $offset >= $maxPl ? 1 : $offset,
-                'next'=> $lim * $offset >= $maxPl ? null : $offset + 1
-            ];
-        }
 
         $ret['filters'] = [
             'commands' => Commands::find()->select(['command_id as comId' , 'title'])->orderBy('title')->asArray()->all(),
@@ -426,7 +393,7 @@ class PlayersController extends Controller
                     $this->message = 'Is value of ' . $k . 'empty';
                     return;
                 } else {
-                    $player->$k = $v;
+                    $player->$k = trim($v);
                 }
             }
             if($player->save()) {

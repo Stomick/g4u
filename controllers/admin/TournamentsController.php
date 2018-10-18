@@ -15,6 +15,7 @@ use app\models\admin\AdminLeagues;
 use app\models\admin\Seasons;
 use app\models\Commands;
 use app\models\Games;
+use app\models\GameStatistic;
 use app\models\statistic\CommandPosInTour;
 use app\models\statistic\CommandToTourn;
 use app\models\statistic\GameOffer;
@@ -443,16 +444,24 @@ class TournamentsController extends Controller
         $indTour = 0;
         $ret = [];
         $maxTour = 0;
+
         foreach (Games::find()
                      ->where(['sub_tournament_id' => $subId, 'league_id' => $this->league_id])
                      ->andWhere($andwhere)
                      ->orderBy('tour')->all() as $k => $game) {
             $maxTour < $game->tour ? $maxTour = $game->tour : $game->tour;
+            $score = null;
+            if($game->the_end == 1){
+                $inSc = GameStatistic::find()->where(['game_id' => $game->game_id , 'command_id' => $game->command_id_in] )->one();
+                $outSc = GameStatistic::find()->where(['game_id' => $game->game_id , 'command_id' => $game->command_id_out] )->one();
+                $score = $inSc->scored . ":" . $outSc->scored;
+            }
             $tours[$indTour++] = [
                 'game_id' => $game->game_id,
                 'tour' => $game->tour,
                 'the_end' => $game->the_end,
                 'date' => $game->date,
+                'score' => $score,
                 'in' => Commands::find()->select([
                     'CONCAT(title ," (", cit.name, ")") as title',
                     'logo',

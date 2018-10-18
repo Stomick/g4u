@@ -12,10 +12,10 @@ namespace app\models;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
-class LikeNews extends ActiveRecord
+class LikedNews extends ActiveRecord
 {
     public static function tableName()
     {
-        return 'news_like';
+        return 'liked_news';
     }
 }

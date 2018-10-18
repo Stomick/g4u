@@ -392,7 +392,7 @@ class GameController extends Controller
                 if ($photo->save()) {
                     $this->answer[$k] = [
                         'pId' => $photo->photo_id,
-                        'src' => $photo->src
+                        'src' => base64_encode(file_get_contents($photo->src))
                     ];
                 } else {
                     $this->error = true;
