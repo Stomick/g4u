@@ -121,10 +121,6 @@ class PlayersController extends Controller
         $where = 'players.player_id !=0';
         $andwhere = '1';
 
-        if($tied != null){
-            $where = 'players.tied='.$tied;
-        }
-
         if($name != null){
             $n = $name;
             $where = 'CONCAT (LCASE(name) ,\' \',LCASE(surename) , \' \' , (patronymic)  ) like "%' . strtolower(iconv(mb_detect_encoding($n),"UTF-8//IGNORE",$n)) .'%"';
@@ -134,6 +130,8 @@ class PlayersController extends Controller
         if($type){
             $andwhere = 'position_id=' . intval($type);
         }
+
+        $tied == null ? $where = 'players.tied='.$tied : $where .= ' AND players.tied='.$tied;
 
         if($liked){
             if($this->player != null) {

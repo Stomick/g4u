@@ -20,6 +20,7 @@ use app\models\Games;
 use app\models\Leagues;
 use app\models\LoginForm;
 use app\models\SignupForm;
+use app\models\SportType;
 use app\models\User;
 use app\components\HttpBearerAuthG4U;
 use yii\filters\ContentNegotiator;
@@ -46,7 +47,7 @@ class UserController extends Controller
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
             'class' => CompAuthG4U::className(),
-            'except' => ['login', 'registration'],
+            'except' => ['login', 'registration', 'getsporttype'],
             'authMethods' => [
                 HttpBearerAuthG4U::className()
             ],
@@ -158,14 +159,33 @@ class UserController extends Controller
         }
     }
 
+    public function actionGetsporttype()
+    {
+        return $this->answer = SportType::find()->asArray()->all();
+    }
 
     public function actionProfile()
     {
         $this->answer = User::find()->where([
-            'id' => (\Yii::$app->user->getId())
+            'id' => $this->user->id
         ])->select(
-            ['id', 'nickname', 'locale', 'leagues.title as league', 'email']
-        )->join('inner join', 'leagues', 'leagues.leagues_id=user.league_id')
+            [
+                'id',
+                'nickname',
+                'locale',
+                'leagues.title as league',
+                'email',
+                'sport_type_id as sportId',
+                'utp.utp_id as utpId',
+                'pl.name',
+                'pl.photo',
+                'pl.surename',
+                'utp.moder as status'
+            ]
+        )
+            ->join('left join', 'user_to_players utp', 'utp.user_id=user.id')
+            ->join('left join', 'players pl', 'utp.player_id=pl.player_id')
+            ->join('left join', 'leagues', 'leagues.leagues_id=user.league_id')
             ->asArray()->one();
     }
 
@@ -205,7 +225,7 @@ class UserController extends Controller
     public function actionPlayer()
     {
         if ($this->player != null) {
-            $this->answer = Players::find()
+            return $this->answer = Players::find()
                 ->select([
                     "player_id",
                     "name",
@@ -225,7 +245,9 @@ class UserController extends Controller
                 ->where(['player_id' => $this->player->player_id])
                 ->asArray()->one();
         } else {
-            return $this->error = true && $this->message = ErrorType::player_not_found[$this->locale];
+            $this->error = true;
+            $this->message = ErrorType::player_not_found[$this->locale];
+            return;
         }
     }
 
@@ -234,6 +256,9 @@ class UserController extends Controller
         if ($this->player != null) {
             if ($merg = MergePlayers::find()->where(['player_id' => $this->player->player_id, 'user_id' => $this->user->id])->one()) {
                 if ($merg->delete()) {
+                    $pl = Players::findOne($this->player->player_id);
+                    $pl->tied = 0;
+                    $pl->update();
                     $this->answer = true;
                     $this->message = ErrorType::answer_true_update[$this->locale];
                 } else {
@@ -308,6 +333,35 @@ class UserController extends Controller
                 }
             }
         }
+    }
+
+    public function actionChangepass()
+    {
+        if ($this->body['newpass'] != '') {
+
+        } else {
+
+        }
+    }
+
+    public function actionMerge($id)
+    {
+        if (Players::find()->where(['player_id' => $id, 'tied' => 0])->one()) {
+            $merge = new MergePlayers();
+            $merge->user_id = $this->user->id;
+            $merge->player_id = $id;
+            if ($merge->save()) {
+                $this->answer = true;
+                $this->message = ErrorType::merge_user_player['true'][$this->locale];
+                return;
+            }
+        } else if (MergePlayers::find()->where(['player_id' => $id, 'user_id' => $this->user->id])->one()) {
+            $this->answer = true;
+            $this->message = ErrorType::merge_user_player['isset'][$this->locale];
+            return;
+        }
+        $this->error = true;
+        $this->message = ErrorType::merge_user_player['false'][$this->locale];
     }
 
     public function actionIndex()

@@ -15,6 +15,7 @@ use app\components\UploadImage;
 use app\models\admin\MergePersonal;
 use app\models\admin\MergePlayers;
 use app\models\admin\Players;
+use app\models\City;
 use app\models\Commands;
 use app\models\statistic\PlayersInCommand;
 use app\models\User;
@@ -230,8 +231,41 @@ class CommandsController extends Controller
             }
         }
     }
+    private function getCommands($limit, $offset , $name , $cityId){
+        $where = 1;
+        if($name){
+            $where = 'title LIKE "' . $name . '%"';
+        }
+        if($cityId) {
+            $where == 1 ? $where = 'commands.city_id=' . $cityId : $where = ' AND commands.city_id=' . $cityId;
+        }
+        return Commands::find()->select(['command_id','CONCAT(title ," (", cit.name, ")") as title', 'logo' , 'state'])
+            ->join('left join', 'cities cit', 'cit.id=commands.city_id')
+            ->orderBy('title')
+            ->limit($limit)
+            ->offset($offset)
+            ->where($where)
+            ->asArray()->all();
+    }
 
-    public function actionList($name = null, $sub = null)
+    public function actionListall($limit = 15, $offset = 0 , $name = null , $citId = null)
+    {
+        $com = self::getCommands($limit,$offset * $limit, $name , $citId);
+        $this->answer['all'] = $com;
+        $cityIdS =[];
+        foreach (Commands::find()->select(['city_id'])->distinct()->all() as $k => $c) {
+            $cityIdS[$k] = City::find()->select(['name' , 'id as citId'])->where(['id'=>$c->city_id])->asArray()->one();
+        }
+
+        $this->answer['filters'] = [
+            'city' => $cityIdS,
+            'prev' => $offset == 0 ? null : $offset - 1,
+            'current' => $offset,
+            'next' => count($com) == $limit ? $offset+1 : null
+        ];
+    }
+
+    public function actionList($name = null, $sub = null , $limits = null , $offset = null)
     {
         $where = "1";
         if (strlen($name) >= 3) {

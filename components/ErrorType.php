@@ -281,4 +281,21 @@ class ErrorType
             'uk' => 'Ви не маєте дозволу до цiеi лiгi',
         ]
     ];
+    const merge_user_player = [
+        'true' => [
+            'ru' => 'Запрос отправлен',
+            'eu' => 'Request has been sent',
+            'uk' => 'Запит вiдправлено',
+        ],
+        'false' => [
+            'ru' => 'Запрос не отправлен',
+            'eu' => 'Request not sent',
+            'uk' => 'Запыт вiдхилино',
+        ],
+        'isset' => [
+            'ru' => 'Запрос не обработан',
+            'eu' => 'Request not processed',
+            'uk' => 'Запит тривае',
+        ]
+    ];
 }
