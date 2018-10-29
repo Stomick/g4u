@@ -146,6 +146,7 @@ class PlayersController extends Controller
             $where .= 'or email like "%' . $n . '%"';
             //$where .= 'or pl.patronymic like "%' . $n .'%"';
         }
+
         if ($tied) {
             $where .= ' AND pl.tied=' . $tied;
         }
